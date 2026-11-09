@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Campus Accueil Visiteurs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&display=swap">
+<style>
+:root{
+--bg:#faf7f8; --surface:#ffffff; --surface-2:#f6eff1; --fg:#241a1d; --muted:#6b5a60; --line:#ece2e5;
+--primary:#8a1538; --primary-2:#5e0b25; --primary-soft:#f8e8ed; --on-primary:#ffffff;
+--accent:#e0283c; --on-accent:#ffffff;
+--ok:#16834a; --ok-soft:#e2f4e9; --warn:#b86200; --warn-soft:#fff0d9; --bad:#c62f2b; --bad-soft:#fde5e4;
+--shadow:0 1px 2px rgba(60,20,30,.05),0 8px 24px rgba(60,20,30,.07);
+--f-head:"Manrope","Segoe UI",system-ui,sans-serif;
+--f-body:"Source Sans 3","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+--f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+--r:14px;
+color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.55 var(--f-body)}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-head);margin:0;line-height:1.15;text-wrap:balance;color:var(--fg)}
+h1{font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(26px,3.2vw,34px);font-weight:800;letter-spacing:-.01em}
+h3{font-size:20px;font-weight:700}
+p{margin:0}
+a{color:var(--primary)}
+.muted{color:var(--muted)}
+.mono{font-family:var(--f-mono);letter-spacing:.03em}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.eyebrow{font:700 13px var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--primary)}
+.proto{background:#2b0d17;color:#fff;font-size:13.5px}
+.proto .wrap{display:flex;gap:8px;align-items:center;justify-content:center;padding-block:6px;text-align:center}
+.proto b{color:#ffc9d3}
+header.site{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:30}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--surface)}
+header.site .wrap{display:flex;align-items:center;gap:20px;min-height:76px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--fg);margin-right:auto}
+.logo .m{width:46px;height:46px;border-radius:12px;background:var(--primary);display:grid;place-items:center;flex:none}
+.logo b{display:block;font:800 19px/1.1 var(--f-head)}
+.logo small{display:block;color:var(--muted);font-size:13.5px}
+nav.main{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+nav.main a{text-decoration:none;color:var(--fg);font-weight:600;padding:9px 12px;border-radius:9px;font-size:16px}
+nav.main a:hover{background:var(--surface-2)}
+nav.main a[aria-current="page"]{color:var(--primary);background:var(--primary-soft)}
+.staff{position:relative}
+.staff > button{display:flex;align-items:center;gap:8px;border:1.5px solid var(--primary);color:var(--primary);background:var(--surface);border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+.staff > button:hover,.staff > button[aria-expanded="true"]{background:var(--primary);color:var(--on-primary)}
+.staff.on > button{background:var(--primary);color:var(--on-primary)}
+.menu{position:absolute;right:0;top:calc(100% + 8px);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;min-width:270px;display:grid}
+.menu a{display:grid;grid-template-columns:36px 1fr;gap:2px 10px;align-items:center;text-decoration:none;color:var(--fg);padding:10px;border-radius:9px}
+.menu a:hover{background:var(--surface-2)}
+.menu a span.i{grid-row:span 2;width:36px;height:36px;border-radius:9px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center}
+.menu a b{font-weight:700}
+.menu a small{color:var(--muted);font-size:13.5px;line-height:1.3}
+@media (max-width:820px){
+header.site .wrap{gap:8px;padding-block:10px}
+nav.main{order:3;width:100%;flex-wrap:nowrap;overflow-x:auto}
+.menu{right:auto;left:0}
+}
+.hero{background:var(--primary-2);color:#fff;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:56px}
+.hero h1{color:#fff}
+.hero p.lead{font-size:20px;color:#f6dbe2;margin-top:16px;max-width:34ch}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero .eyebrow{color:#ffc9d3;margin-bottom:12px}
+.hero-art{max-width:100%;width:100%;height:auto;display:block}
+@media (max-width:860px){.hero .wrap{grid-template-columns:minmax(0,1fr);padding-block:36px}.hero-art{max-width:420px;margin:0 auto}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:11px 18px;min-height:48px;font-weight:700;cursor:pointer;text-decoration:none;color:var(--fg);font-size:16px;transition:background .15s,border-color .15s,transform .1s}
+.btn:hover{border-color:var(--primary)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.btn.primary:hover{background:var(--primary-2)}
+.btn.accent{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn.accent:hover{filter:brightness(1.05)}
+.btn.white{background:#fff;color:var(--primary);border-color:#fff}.btn.white:hover{background:#fdeef1}
+.btn.outline-light{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+.btn.outline-light:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.btn.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.link-bad{color:var(--bad);border-color:transparent;background:transparent}
+.btn.link-bad:hover{border-color:var(--bad-soft);background:var(--bad-soft)}
+.btn.sm{min-height:38px;padding:7px 13px;font-size:14.5px}
+.btn.xl{min-height:64px;font-size:19px;padding:14px 26px;border-radius:12px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+section.block{padding-block:48px}
+.sec-head{display:grid;gap:8px;margin-bottom:26px;max-width:62ch}
+.sec-head p{color:var(--muted);font-size:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px;box-shadow:var(--shadow);min-width:0}
+.infos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:-34px;position:relative}
+.info{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--shadow)}
+.info .i{width:44px;height:44px;border-radius:12px;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;flex:none}
+.info b{display:block;font-family:var(--f-head)}
+.info span{color:var(--muted);font-size:15.5px}
+@media (max-width:820px){.infos{grid-template-columns:minmax(0,1fr);margin-top:20px}}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:24px;display:grid;gap:10px;align-content:start}
+.steps .n{width:42px;height:42px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font:800 18px var(--f-head)}
+.steps b{font:700 19px var(--f-head)}
+.steps p{color:var(--muted)}
+@media (max-width:820px){.steps{grid-template-columns:minmax(0,1fr)}}
+.wizard{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+@media (max-width:920px){.wizard{grid-template-columns:minmax(0,1fr)}}
+.progress{display:flex;gap:8px;list-style:none;margin:0 0 24px;padding:0}
+.progress li{flex:1;display:grid;gap:8px;font-size:14.5px;font-weight:600;color:var(--muted)}
+.progress li::before{content:"";height:6px;border-radius:99px;background:var(--line)}
+.progress li.done::before,.progress li.cur::before{background:var(--primary)}
+.progress li.cur{color:var(--primary)}
+.step-title{display:grid;gap:4px;margin-bottom:20px}
+.step-title p{color:var(--muted)}
+.fields{display:grid;gap:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.row{grid-template-columns:1fr}}
+label.f{display:grid;gap:6px;font-weight:600;font-size:15.5px}
+label.f .opt{font-weight:400;color:var(--muted)}
+input[type=text],input[type=email],input[type=date],input[type=datetime-local],select,textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);min-height:50px;font-size:17px}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 4px var(--primary-soft)}
+.group-label{font-weight:700;font-size:15.5px;margin-bottom:8px;display:block}
+.tiles-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pick{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:14px;display:grid;gap:8px;justify-items:start;text-align:left;cursor:pointer;font-weight:700}
+.pick .i{width:38px;height:38px;border-radius:10px;background:var(--surface-2);color:var(--primary);display:grid;place-items:center}
+.pick small{font-weight:400;color:var(--muted);font-size:13.5px;line-height:1.3}
+.pick:hover{border-color:var(--primary)}
+.pick[aria-pressed="true"]{border-color:var(--primary);background:var(--primary-soft);box-shadow:inset 0 0 0 1px var(--primary)}
+.pick[aria-pressed="true"] .i{background:var(--primary);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip-btn{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 16px;font-weight:600;cursor:pointer;min-height:42px}
+.chip-btn:hover{border-color:var(--primary)}
+.chip-btn[aria-pressed="true"]{background:var(--primary);color:#fff;border-color:var(--primary)}
+.chip-btn:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px}
+.slots .chip-btn{border-radius:10px;font-variant-numeric:tabular-nums}
+.err{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:10px 14px;font-weight:600}
+.wnav{display:flex;justify-content:space-between;gap:10px;margin-top:26px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap}
+.recap{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;background:var(--surface-2);border-radius:12px;padding:16px 18px}
+.recap dt{color:var(--muted)} .recap dd{margin:0;font-weight:700;min-width:0;overflow-wrap:anywhere}
+.consent{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer}
+.consent input{width:22px;height:22px;margin-top:2px;accent-color:var(--primary);flex:none}
+.note{display:flex;gap:12px;align-items:center;background:var(--warn-soft);color:#6b3b00;border-radius:12px;padding:12px 14px;font-weight:600;font-size:15.5px}
+.aside-help{display:grid;gap:14px;position:sticky;top:96px}
+.aside-help .card{padding:20px}
+.helpcard{background:var(--primary-soft);border:0;box-shadow:none}
+.helpcard b{font-family:var(--f-head);display:block;margin-bottom:4px}
+.success{text-align:center;display:grid;gap:14px;justify-items:center;padding-block:10px}
+.big-check{width:80px;height:80px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center}
+.ticket{border:2px dashed var(--line);border-radius:14px;padding:16px 26px;display:grid;gap:2px}
+.ticket .mono{font-size:34px;font-weight:700;color:var(--primary)}
+.track{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:880px){.track{grid-template-columns:minmax(0,1fr)}}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.timeline li{display:grid;grid-template-columns:34px 1fr;gap:14px;position:relative;padding-bottom:22px}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::after{content:"";position:absolute;left:16px;top:34px;bottom:0;width:2px;background:var(--line)}
+.timeline li:last-child::after{display:none}
+.timeline .dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--muted);border:2px solid var(--line);z-index:1}
+.timeline li.done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+.timeline li.now .dot{background:var(--surface);border-color:var(--primary);color:var(--primary)}
+.timeline li.fail .dot{background:var(--bad);border-color:var(--bad);color:#fff}
+.timeline b{display:block}
+.timeline span{color:var(--muted);font-size:15px}
+.staff-head{background:var(--surface);border-bottom:1px solid var(--line)}
+.staff-head .wrap{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding-block:30px}
+.staff-head p{color:var(--muted);margin-top:6px;max-width:60ch}
+.crumb{font-size:14px;color:var(--muted);margin-bottom:8px}
+.grid-2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:900px){.grid-2{grid-template-columns:minmax(0,1fr)}}
+.stack{display:grid;gap:22px}
+.card > h3{margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.count{background:var(--bad);color:#fff;border-radius:999px;font:700 12px var(--f-body);min-width:22px;height:22px;display:inline-grid;place-items:center;padding:0 7px}
+.list{display:grid;gap:12px}
+.item{border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px;background:var(--surface)}
+.item .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.who{font:700 18px var(--f-head)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:15px;color:var(--muted)}
+.tag{display:inline-block;background:var(--surface-2);border-radius:6px;padding:2px 9px;font-size:13.5px;font-weight:600;color:var(--fg)}
+.empty{text-align:center;padding:28px 14px;color:var(--muted);border:1.5px dashed var(--line);border-radius:12px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:13.5px;font-weight:700;white-space:nowrap}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.p-wait{background:var(--surface-2);color:var(--muted)}
+.p-ok{background:var(--ok-soft);color:var(--ok)}
+.p-warn{background:var(--warn-soft);color:var(--warn)}
+.p-bad{background:var(--bad-soft);color:var(--bad)}
+.p-info{background:var(--primary-soft);color:var(--primary)}
+details.card summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font:700 20px var(--f-head)}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary::after{content:"+";font-size:26px;color:var(--primary)}
+details.card[open] summary::after{content:"–"}
+form.inv{display:grid;gap:14px;margin-top:16px}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15.5px}
+th{text-align:left;font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700;padding:8px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap}
+td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.scanbox{display:grid;gap:14px}
+.scanrow{display:flex;gap:10px;flex-wrap:wrap}
+.scanrow input{flex:1 1 220px;font-family:var(--f-mono);font-size:22px;letter-spacing:.08em;text-transform:uppercase;min-height:60px;text-align:center}
+#reader{border-radius:12px;overflow:hidden;border:1px solid var(--line);max-width:420px}
+.result{border-radius:16px;border:2.5px solid var(--line);padding:24px;display:grid;gap:16px;background:var(--surface)}
+.result.idle{border-style:dashed;text-align:center;color:var(--muted);padding:40px 20px;justify-items:center}
+.result.green{border-color:var(--ok);background:var(--ok-soft)}
+.result.orange{border-color:var(--warn);background:var(--warn-soft)}
+.result.red{border-color:var(--bad);background:var(--bad-soft)}
+.verdict{display:flex;gap:16px;align-items:center}
+.vicon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.green .vicon{background:var(--ok)} .orange .vicon{background:var(--warn)} .red .vicon{background:var(--bad)}
+.verdict small{font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:12.5px;color:var(--muted)}
+.verdict h3{font-size:30px;font-weight:800}
+.green h3{color:var(--ok)} .orange h3{color:var(--warn)} .red h3{color:var(--bad)}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;background:var(--surface);border-radius:12px;padding:14px 16px;font-size:16px}
+.facts dt{color:var(--muted)} .facts dd{margin:0;font-weight:700;min-width:0;overflow-wrap:anywhere}
+.motto{font-size:14px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.decided{background:var(--surface);border-radius:12px;padding:14px 16px;font-weight:700}
+.override{display:inline-block;margin-left:8px;background:var(--accent);color:var(--on-accent);font-size:12px;font-weight:700;border-radius:5px;padding:2px 7px}
+.paper{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}
+.box{display:inline-block;width:18px;height:18px;border:1.5px solid #333;border-radius:3px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:820px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;display:grid;gap:4px}
+.kpi .k{color:var(--muted);font-size:15px}
+.kpi .v{font:800 40px/1.05 var(--f-head);font-variant-numeric:tabular-nums;color:var(--primary)}
+.kpi .s{color:var(--muted);font-size:14px}
+.bar{display:flex;height:18px;border-radius:999px;overflow:hidden;background:var(--surface-2)}
+.bar span{display:block;height:100%}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:15px;margin-top:12px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px}
+ul.points{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+ul.points li{display:grid;grid-template-columns:28px 1fr;gap:10px}
+ul.points li::before{content:"✓";width:26px;height:26px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;font-weight:800;font-size:14px}
+.badge{width:310px;max-width:100%;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff;color:#2b0d17;box-shadow:var(--shadow)}
+.badge .band{background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font:800 14px var(--f-head)}
+.badge .band span:last-child{background:var(--accent);color:var(--on-accent);border-radius:6px;padding:3px 9px;letter-spacing:.12em}
+.badge .bd{padding:18px;display:grid;gap:6px;text-align:center}
+.badge .nm{font:800 24px/1.15 var(--f-head)}
+.badge .qr{display:grid;place-items:center;margin:8px 0}
+.badge .qr img,.badge .qr canvas{width:180px;height:180px}
+.badge .code{font:700 19px var(--f-mono);letter-spacing:.08em}
+.badge .ft{background:var(--surface-2);font-size:12px;color:var(--muted);text-align:center;padding:9px}
+.qr-fallback{font:700 20px var(--f-mono);padding:30px;border:2px dashed #999;border-radius:8px}
+footer.site{background:#2b0d17;color:#f0d7de;margin-top:40px}
+footer.site .wrap{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:28px;padding-block:40px}
+footer.site b{color:#fff;font-family:var(--f-head);display:block;margin-bottom:10px}
+footer.site a{color:#f0d7de;text-decoration:none;display:block;padding:3px 0}
+footer.site a:hover{color:#fff;text-decoration:underline}
+footer.site .legal{grid-column:1/-1;border-top:1px solid #5a1f30;padding-top:18px;font-size:14px;color:#d3aab6}
+@media (max-width:760px){footer.site .wrap{grid-template-columns:1fr}}
+dialog{border:0;border-radius:18px;padding:0;background:var(--surface);color:var(--fg);max-width:min(440px,calc(100vw - 32px));width:100%;box-shadow:0 24px 70px rgba(0,0,0,.25)}
+dialog::backdrop{background:rgba(40,10,20,.5)}
+.dlg{padding:24px;display:grid;gap:16px}
+#toasts{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(90px + env(safe-area-inset-top,0px));display:grid;gap:8px;z-index:60;width:min(380px,calc(100vw - 32px))}
+.toast{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-left:5px solid var(--ok);border-radius:12px;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;box-shadow:var(--shadow);font-weight:600;animation:tin .25s ease-out}
+.toast button{background:var(--primary);color:#fff;border:0;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:700}
+@keyframes tin{from{transform:translateX(16px);opacity:0}}
+.demo-fab{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50}
+.demo-fab > button{display:flex;align-items:center;gap:8px;background:#2b0d17;color:#fff;border:0;border-radius:999px;padding:11px 18px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.demo-panel{position:absolute;left:0;bottom:calc(100% + 10px);background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,.18);padding:18px;width:min(340px,calc(100vw - 32px));display:grid;gap:12px}
+.demo-panel h4{font-size:16px}
+.demo-panel p{font-size:14px;color:var(--muted)}
+.demo-panel .btn{width:100%}
+.clock{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums;font-weight:700;background:var(--surface-2);border-radius:10px;padding:8px 12px;font-size:15px}
+.clock .sim{background:var(--accent);color:var(--on-accent);border-radius:999px;font-size:11px;padding:1px 8px;text-transform:uppercase;letter-spacing:.06em}
+#print-area{display:none}
+@media print{
+body{background:#fff}
+body > *:not(#print-area){display:none!important}
+body::before{display:none}
+#print-area{display:block}
+#print-area .badge{box-shadow:none;margin-top:20px}
+}
+</style>
+</head>
+<body>
+<div class="proto" role="note"><div class="wrap"><span><b>Prototype étudiant</b> — Master IRH — site non officiel, sans lien avec les services de l'université — aucune donnée n'est transmise</span></div></div>
+<header class="site"><div class="wrap">
+<a class="logo" href="#accueil" data-go="accueil">
+<span class="m" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 32 32"><path d="M4 22h24" stroke="#e0283c" stroke-width="3" stroke-linecap="round"/><path d="M8 22a8 8 0 0 1 16 0" fill="none" stroke="#fff" stroke-width="3"/><path d="M16 6v4M7 10l2.5 2.5M25 10l-2.5 2.5" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+<span><b>Campus universitaire</b><small>Accueil des visiteurs · projet étudiant non officiel</small></span>
+</a>
+<nav class="main" aria-label="Navigation principale">
+<a href="#accueil" data-go="accueil">Accueil</a>
+<a href="#visite" data-go="accueil" data-anchor="visite">Préparer ma visite</a>
+<a href="#suivi" data-go="suivi">Suivre ma demande</a>
+</nav>
+<div class="staff" id="staff">
+<button type="button" id="staffBtn" aria-expanded="false" aria-haspopup="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Espace personnel</button>
+<div class="menu" id="staffMenu" hidden>
+<a href="#hote" data-go="hote"><span class="i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 11l2 2 4-4"/></svg></span><b>Espace service visité</b><small>Valider les demandes, inviter</small></a>
+<a href="#agent" data-go="agent"><span class="i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><b>Poste de sécurité</b><small>Contrôle à l'entrée</small></a>
+<a href="#tableau" data-go="tableau"><span class="i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><b>Tableau de bord</b><small>Indicateurs du jour</small></a>
+</div>
+</div>
+</div></header>
+<main>
+<div class="view" id="v-accueil">
+<section class="hero">
+<div class="wrap">
+<div>
+<p class="eyebrow">Visiteurs · Prestataires · Candidats</p>
+<h1>Bienvenue sur le campus</h1>
+<p class="lead">Préparez votre visite en ligne et entrez plus vite grâce à votre QR code personnel.</p>
+<div class="cta">
+<a class="btn white xl" href="#visite" data-go="accueil" data-anchor="visite">Préparer ma visite</a>
+<a class="btn outline-light xl" href="#suivi" data-go="suivi">J'ai un numéro de demande</a>
+</div>
+</div>
+<svg class="hero-art" viewBox="0 0 520 380" role="img" aria-label="Illustration : le bâtiment principal du campus et un téléphone affichant un QR code">
+<rect x="0" y="300" width="520" height="80" fill="#3d0a1b"/>
+<circle cx="430" cy="80" r="46" fill="#e0283c" opacity=".9"/>
+<rect x="70" y="120" width="300" height="190" fill="#f8e8ed"/>
+<polygon points="56,124 220,52 384,124" fill="#ffffff"/>
+<rect x="56" y="118" width="328" height="14" fill="#f0cfd8"/>
+<g fill="#f0cfd8"><rect x="96" y="146" width="18" height="140"/><rect x="146" y="146" width="18" height="140"/><rect x="276" y="146" width="18" height="140"/><rect x="326" y="146" width="18" height="140"/></g>
+<rect x="188" y="196" width="64" height="114" rx="32" fill="#8a1538"/>
+<rect x="56" y="296" width="328" height="14" fill="#f0cfd8"/>
+<circle cx="220" cy="92" r="12" fill="#8a1538"/>
+<g fill="#2e9e62"><circle cx="30" cy="268" r="34"/><circle cx="470" cy="262" r="38"/><circle cx="500" cy="282" r="26"/></g>
+<rect x="27" y="290" width="6" height="22" fill="#3d0a1b"/><rect x="467" y="290" width="6" height="22" fill="#3d0a1b"/>
+<g transform="translate(372 150) rotate(8)">
+<rect width="118" height="214" rx="18" fill="#2b0d17"/>
+<rect x="8" y="16" width="102" height="182" rx="10" fill="#ffffff"/>
+<rect x="8" y="16" width="102" height="28" rx="10" fill="#8a1538"/>
+<rect x="22" y="56" width="74" height="74" fill="#2b0d17"/>
+<g fill="#fff"><rect x="28" y="62" width="18" height="18"/><rect x="72" y="62" width="18" height="18"/><rect x="28" y="106" width="18" height="18"/><rect x="54" y="88" width="10" height="10"/><rect x="72" y="106" width="8" height="8"/><rect x="84" y="94" width="6" height="6"/><rect x="54" y="66" width="6" height="12"/></g>
+<g fill="#2b0d17"><rect x="32" y="66" width="10" height="10"/><rect x="76" y="66" width="10" height="10"/><rect x="32" y="110" width="10" height="10"/></g>
+<rect x="22" y="142" width="74" height="10" rx="5" fill="#f0cfd8"/>
+<rect x="22" y="160" width="50" height="10" rx="5" fill="#f0cfd8"/>
+<rect x="22" y="178" width="74" height="12" rx="6" fill="#16834a"/>
+</g>
+</svg>
+</div>
+</section>
+<div class="wrap">
+<div class="infos">
+<div class="info"><span class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>Accueil ouvert 8 h – 18 h</b><span>Du lundi au vendredi, hors jours fériés.</span></div></div>
+<div class="info"><span class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2.5"/><path d="M14 10h4M14 14h3"/></svg></span><div><b>Pièce d'identité obligatoire</b><span>À présenter avec votre QR code à l'entrée.</span></div></div>
+<div class="info"><span class="i"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M12 7v6h5l2 6M12 13a5 5 0 1 0 4 7"/></svg></span><div><b>Accès pour tous</b><span>Entrée accessible aux personnes à mobilité réduite.</span></div></div>
+</div>
+</div>
+<section class="block"><div class="wrap">
+<div class="sec-head"><p class="eyebrow">Comment ça marche</p><h2>Votre visite en 3 étapes</h2></div>
+<ol class="steps">
+<li><span class="n">1</span><b>Je fais ma demande</b><p>Je précise qui je viens voir, pourquoi, et à quel moment.</p></li>
+<li><span class="n">2</span><b>Je reçois mon QR code</b><p>Dès que le service que je visite a validé ma venue.</p></li>
+<li><span class="n">3</span><b>Je le présente à l'entrée</b><p>Avec ma pièce d'identité. L'agent d'accueil me laisse entrer.</p></li>
+</ol>
+</div></section>
+<section class="block" id="visite" style="padding-top:8px"><div class="wrap">
+<div class="sec-head"><p class="eyebrow">Demande d'accès</p><h2>Préparer ma visite</h2><p>Environ 2 minutes. Aucun compte à créer.</p></div>
+<div class="wizard">
+<div class="card" id="wizCard">
+<ol class="progress" id="progress"><li>1. Vous</li><li>2. Votre visite</li><li>3. Confirmation</li></ol>
+<div data-step="1">
+<div class="step-title"><h3>Qui êtes-vous ?</h3><p>Ces informations permettent à l'agent de vous accueillir.</p></div>
+<div class="fields">
+<div class="row">
+<label class="f">Prénom<input type="text" id="w_prenom" autocomplete="given-name" placeholder="Camille"></label>
+<label class="f">Nom<input type="text" id="w_nom" autocomplete="family-name" placeholder="Martin"></label>
+</div>
+<label class="f">Adresse e-mail<input type="email" id="w_email" autocomplete="email" placeholder="camille.martin@exemple.fr"></label>
+<div class="note"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex:none"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2.5"/><path d="M14 10h4M14 14h3"/></svg>Pièce d'identité à présenter sur place. Nous ne vous demandons aucun numéro ici.</div>
+</div>
+</div>
+<div data-step="2" hidden>
+<div class="step-title"><h3>Votre visite</h3><p>Choisissez le service, le motif et le moment de votre venue.</p></div>
+<div class="fields">
+<div><span class="group-label">Quel service venez-vous voir ?</span><div class="tiles-pick" id="w_service"></div></div>
+<div><span class="group-label">Motif de la visite</span><div class="chips" id="w_motif"></div>
+<label class="f" id="w_autreWrap" hidden style="margin-top:10px">Précisez<input type="text" id="w_autre" placeholder="ex. visite des locaux"></label></div>
+<label class="f" style="max-width:280px">Date<input type="date" id="w_date"></label>
+<div><span class="group-label">Créneau d'arrivée</span><div class="slots" id="w_slot"></div></div>
+</div>
+</div>
+<div data-step="3" hidden>
+<div class="step-title"><h3>Vérifiez et envoyez</h3><p>Relisez votre demande avant de l'envoyer.</p></div>
+<div class="fields">
+<dl class="recap" id="w_recap"></dl>
+<label class="consent"><input type="checkbox" id="w_consent"><span>Vos données servent uniquement à préparer votre accueil et sont supprimées 24 h après votre visite.</span></label>
+</div>
+</div>
+<div data-step="done" hidden>
+<div class="success">
+<div class="big-check"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+<h3 style="font-size:28px">Demande envoyée</h3>
+<p class="muted" style="max-width:44ch">Vous recevrez votre QR code dès que le service visité aura validé votre venue.</p>
+<div class="ticket"><span class="muted">Votre numéro de demande</span><span class="mono" id="doneId">V-0000</span></div>
+<p class="muted" style="font-size:15px">Notez-le : il sert à suivre votre demande et à retrouver votre QR code.</p>
+<div class="actions" style="justify-content:center"><button class="btn primary" type="button" id="doneTrack">Suivre ma demande</button><button class="btn" type="button" id="doneNew">Nouvelle demande</button></div>
+</div>
+</div>
+<p class="err" id="w_err" role="alert" hidden style="margin-top:16px"></p>
+<div class="wnav" id="wnav">
+<button class="btn" type="button" id="wBack">← Retour</button>
+<button class="btn primary" type="button" id="wNext">Continuer →</button>
+</div>
+</div>
+<aside class="aside-help">
+<div class="card helpcard">
+<b>Besoin d'aide ?</b>
+<p>Vous n'arrivez pas à faire la démarche ? Présentez-vous simplement à l'accueil, une personne vous aidera.</p>
+</div>
+<div class="card">
+<b style="font-family:var(--f-head);display:block;margin-bottom:6px">Vos données</b>
+<p class="muted" style="font-size:15.5px">Seules les informations utiles à votre accueil sont demandées. Elles sont effacées automatiquement 24 h après votre visite.</p>
+</div>
+</aside>
+</div>
+</div></section>
+</div>
+<div class="view" id="v-suivi" hidden>
+<section class="block"><div class="wrap">
+<div class="sec-head"><p class="eyebrow">Suivi</p><h2>Suivre ma demande</h2><p>Saisissez le numéro reçu après votre demande (exemple : V-2041).</p></div>
+<div class="track">
+<div class="card">
+<form id="lkForm" class="fields">
+<label class="f">Numéro de demande<input type="text" id="lk_q" class="mono" placeholder="V-2041" autocomplete="off" style="font-size:22px;text-transform:uppercase"></label>
+<button class="btn primary" type="submit">Afficher ma demande</button>
+</form>
+<p class="muted" style="margin-top:16px;font-size:15px">Numéro perdu ? Présentez-vous à l'accueil avec votre pièce d'identité.</p>
+</div>
+<div id="lkRes"><div class="empty">Votre demande s'affichera ici.</div></div>
+</div>
+</div></section>
+</div>
+<div class="view" id="v-hote" hidden>
+<div class="staff-head"><div class="wrap"><div>
+<p class="crumb">Espace personnel › Service visité</p>
+<h2>Espace service visité</h2>
+<p>Validez les demandes adressées à votre service. Chaque validation crée un QR code valable seulement pour la date et le créneau prévus.</p>
+</div></div></div>
+<section class="block"><div class="wrap grid-2">
+<div class="card">
+<h3>Demandes à valider <span class="count" id="cntPending2" hidden>0</span></h3>
+<div class="list" id="pendingList"></div>
+</div>
+<div class="stack">
+<details class="card" id="invCard">
+<summary>Inviter un visiteur</summary>
+<p class="muted" style="margin-top:8px;font-size:15.5px">Vous attendez quelqu'un ? Créez l'invitation vous-même : le QR code est prêt tout de suite.</p>
+<form class="inv" id="invForm">
+<div class="row">
+<label class="f">Prénom<input type="text" id="i_prenom" required></label>
+<label class="f">Nom<input type="text" id="i_nom" required></label>
+</div>
+<label class="f">E-mail du visiteur<input type="email" id="i_email" required></label>
+<div class="row">
+<label class="f">Votre service<select id="i_service" required></select></label>
+<label class="f">Motif<select id="i_motif" required></select></label>
+</div>
+<div class="row">
+<label class="f">Date<input type="date" id="i_date" required></label>
+<label class="f">Créneau<select id="i_slot" required></select></label>
+</div>
+<button class="btn primary" type="submit">Créer l'invitation</button>
+</form>
+</details>
+<div class="card">
+<h3>Visites validées à venir</h3>
+<div class="list" id="upcomingList"></div>
+</div>
+</div>
+</div></section>
+</div>
+<div class="view" id="v-agent" hidden>
+<div class="staff-head"><div class="wrap">
+<div>
+<p class="crumb">Espace personnel › Poste de sécurité</p>
+<h2>Contrôle à l'entrée principale</h2>
+<p>Le système vérifie le QR code et vous propose un résultat. C'est vous qui décidez de laisser entrer.</p>
+</div>
+<div class="actions"><span class="clock"><span id="clockTxt">—</span><span class="sim" id="clockSim" hidden>simulée</span></span><button class="btn" type="button" id="panneBtn">Mode panne</button></div>
+</div></div>
+<section class="block"><div class="wrap stack">
+<div class="card" id="panneView" hidden>
+<div class="actions" style="justify-content:space-between;margin-bottom:16px">
+<div><h3>Liste de contrôle manuel</h3><p class="muted">À utiliser si le système est indisponible : cochez les entrées à la main.</p></div>
+<div class="actions"><button class="btn primary" type="button" id="pannePrint">Imprimer la liste</button><button class="btn" type="button" id="panneClose">Fermer</button></div>
+</div>
+<div class="paper tbl" id="panneSheet"></div>
+</div>
+<div class="grid-2">
+<div class="stack">
+<div class="card scanbox">
+<h3 style="margin:0">Scanner ou saisir le code</h3>
+<form id="scanForm" class="scanrow">
+<input type="text" id="codeInput" placeholder="7KQP-M4XA" autocomplete="off" aria-label="Code du QR ou numéro de demande">
+<button class="btn primary xl" type="submit">Vérifier</button>
+</form>
+<div class="actions"><button class="btn sm" type="button" id="camBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Scanner avec la caméra</span></button><span class="muted" style="font-size:14px">Code du QR ou numéro de demande</span></div>
+<div id="reader" hidden></div>
+</div>
+<div id="result"></div>
+</div>
+<div class="card">
+<h3>Attendus aujourd'hui</h3>
+<div class="tbl" id="todayList"></div>
+</div>
+</div>
+<div class="card">
+<h3>Historique des entrées du jour</h3>
+<div class="tbl" id="history"></div>
+</div>
+</div></section>
+</div>
+<div class="view" id="v-tableau" hidden>
+<div class="staff-head"><div class="wrap"><div>
+<p class="crumb">Espace personnel › Tableau de bord</p>
+<h2>Tableau de bord du jour</h2>
+<p>L'activité de l'accueil aujourd'hui, calculée à partir des contrôles enregistrés.</p>
+</div></div></div>
+<section class="block"><div class="wrap stack">
+<div class="kpis" id="kpis"></div>
+<div class="grid-2">
+<div class="card"><h3>Résultats des contrôles</h3><div id="dist"></div></div>
+<div class="card"><h3>Ce que ça change pour l'équipe</h3>
+<ul class="points">
+<li>Moins de vérifications sur listes papier, plus de temps pour accueillir et orienter.</li>
+<li>L'agent garde la décision : ses corrections sont tracées et améliorent les règles.</li>
+<li>Une procédure de secours existe : la liste imprimable du mode panne.</li>
+</ul>
+<p class="muted" style="margin-top:16px;font-size:14px">Hypothèse : 2 min par vérification manuelle, 15 s avec QR code.</p>
+</div>
+</div>
+</div></section>
+</div>
+</main>
+<footer class="site"><div class="wrap">
+<div><b>Projet Master IRH</b><p>Cas d'étude : l'accueil des visiteurs d'un campus universitaire.</p><p style="margin-top:8px">Module Management et IA</p></div>
+<div><b>Visiteurs</b><a href="#visite" data-go="accueil" data-anchor="visite">Préparer ma visite</a><a href="#suivi" data-go="suivi">Suivre ma demande</a><a href="#accueil" data-go="accueil">Horaires et accès</a></div>
+<div><b>Personnel</b><a href="#hote" data-go="hote">Service visité</a><a href="#agent" data-go="agent">Poste de sécurité</a><a href="#tableau" data-go="tableau">Tableau de bord</a></div>
+<div class="legal">Prototype réalisé dans le cadre du Master IRH. Site fictif et non officiel, rattaché à aucun établissement. Les données restent dans votre navigateur et ne sont envoyées nulle part.</div>
+</div></footer>
+<div class="demo-fab">
+<div class="demo-panel" id="demoPanel" hidden>
+<h4>Outils de démonstration</h4>
+<p>Pour présenter le prototype en classe. Les visiteurs fictifs sont prévus aujourd'hui.</p>
+<button class="btn primary" type="button" id="demoBtn">Charger des données de démo</button>
+<label class="f" style="font-size:14px">Heure simulée<input type="datetime-local" id="simInput"></label>
+<div class="actions"><button class="btn sm" type="button" id="simApply" style="flex:1">Appliquer</button><button class="btn sm" type="button" id="simReal" style="flex:1">Heure réelle</button></div>
+<button class="btn link-bad sm" type="button" id="wipeBtn">Tout effacer</button>
+</div>
+<button type="button" id="demoToggle" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>Démo</button>
+</div>
+<div id="toasts" aria-live="polite"></div>
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+<div id="print-area"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const EMBED = (() => { try { return window.self !== window.top } catch (e) { return true } })();
+const KEY = 'campus-accueil-v3';
+const blank = () => ({ visits: [], log: [], offset: 0 });
+let S;
+try { S = JSON.parse(localStorage.getItem(KEY)) || blank() } catch (e) { S = blank() }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)) } catch (e) {} };
+const pad = n => String(n).padStart(2, '0');
+const now = () => new Date(Date.now() + (S.offset || 0));
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const hm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const today = () => ymd(now());
+const MIN = 60e3;
+const SLOTS = []; for (let h = 8; h < 18; h++) SLOTS.push(`${pad(h)}:00-${pad(h + 1)}:00`);
+const slotTxt = s => s.replace(':00-', 'h – ').replace(/:00$/, 'h').replace(/^0/, '');
+function bounds(v) {
+const [y, m, d] = v.date.split('-').map(Number);
+const mk = t => { const [H, M] = t.split(':').map(Number); return new Date(y, m - 1, d, H, M) };
+const [a, b] = v.slot.split('-');
+return { start: mk(a), end: mk(b) };
+}
+const dateTxt = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) };
+const SVG = p => `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const SERVICES = [
+['scolarite', 'Scolarité', 'Inscriptions, diplômes', SVG('<path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/>')],
+['bibliotheque', 'Bibliothèque', 'Prêts, salles de travail', SVG('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>')],
+['rh', 'Service RH', 'Entretiens, dossiers', SVG('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>')],
+['enseignant', 'Enseignants', 'Département pédagogique', SVG('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>')],
+['autre', 'Autre service', 'Logistique, technique…', SVG('<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>')]
+];
+const MOTIFS = [['rdv', 'Rendez-vous'], ['examen', 'Examen'], ['reunion', 'Réunion'], ['livraison', 'Livraison'], ['autre', 'Autre']];
+const lbl = (list, k) => (list.find(x => x[0] === k) || [k, k])[1];
+const motifTxt = v => v.motif === 'autre' && v.autre ? v.autre : lbl(MOTIFS, v.motif);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ALPH = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const rnd = n => { const a = new Uint32Array(n); crypto.getRandomValues(a); return [...a].map(x => ALPH[x % ALPH.length]).join('') };
+const newToken = () => { let t; do { t = rnd(4) + '-' + rnd(4) } while (S.visits.some(v => v.token === t)); return t };
+const newId = () => { let id; do { id = 'V-' + (1000 + Math.floor(Math.random() * 9000)) } while (S.visits.some(v => v.id === id)); return id };
+const fullName = v => `${v.prenom} ${v.nom}`;
+const isEmail = s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+function findVisit(q) {
+const n = String(q || '').toUpperCase().replace(/\s+/g, '');
+if (!n) return null;
+const flat = n.replace(/-/g, '');
+return S.visits.find(v => v.id === n || v.id === 'V-' + flat || v.id.replace('-', '') === flat || v.token.replace('-', '') === flat) || null;
+}
+function fillSelect(sel, list) { sel.innerHTML = list.map(x => Array.isArray(x) ? `<option value="${x[0]}">${esc(x[1])}</option>` : `<option value="${x}">${slotTxt(x)}</option>`).join('') }
+function toast(msg, action, kind) {
+const el = document.createElement('div');
+el.className = 'toast';
+if (kind === 'warn') el.style.borderLeftColor = 'var(--warn)';
+el.innerHTML = `<span>${esc(msg)}</span>`;
+if (action) { const b = document.createElement('button'); b.textContent = action.label; b.onclick = () => { action.fn(); el.remove() }; el.append(b) }
+$('#toasts').append(el);
+setTimeout(() => el.remove(), action ? 7000 : 4000);
+}
+function drawQR(el, text, size = 180) {
+el.innerHTML = '';
+if (typeof QRCode === 'undefined') { el.innerHTML = `<div class="qr-fallback">${esc(text)}</div>`; return }
+new QRCode(el, { text, width: size, height: size, colorDark: '#2b0d17', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+}
+const hydrateQR = root => root.querySelectorAll('[data-qr]').forEach(el => drawQR(el, el.dataset.qr));
+function badgeHTML(v) {
+return `<div class="badge">
+<div class="band"><span>Campus universitaire</span><span>VISITEUR</span></div>
+<div class="bd">
+<div class="nm">${esc(fullName(v))}</div>
+<div class="muted">${esc(lbl(SERVICES, v.service))} · ${esc(motifTxt(v))}</div>
+<div style="font-weight:700">${esc(dateTxt(v.date))} · ${slotTxt(v.slot)}</div>
+<div class="qr" data-qr="${esc(v.token)}"></div>
+<div class="code">${esc(v.token)}</div>
+<div class="muted" style="font-size:13px">Demande ${esc(v.id)}</div>
+</div>
+<div class="ft">Pièce d'identité à présenter · Prototype non officiel</div>
+</div>`;
+}
+function printHTML(html) { const pa = $('#print-area'); pa.innerHTML = html; hydrateQR(pa); setTimeout(() => window.print(), 350) }
+const dlg = $('#dlg');
+function openBadge(v, intro) {
+$('#dlgBody').innerHTML = `${intro ? `<p>${intro}</p>` : ''}${badgeHTML(v)}
+<div class="actions" style="justify-content:center">
+${EMBED ? '' : '<button class="btn primary" type="button" id="dlgPrint">Imprimer le badge</button>'}
+<button class="btn" type="button" id="dlgClose">Fermer</button>
+</div>`;
+hydrateQR($('#dlgBody'));
+$('#dlgClose').onclick = () => dlg.close();
+const p = $('#dlgPrint'); if (p) p.onclick = () => { dlg.close(); printHTML(badgeHTML(v)) };
+dlg.showModal();
+}
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close() });
+function evaluate(v) {
+if (!v) return { level: 'red', title: 'QR inconnu', reason: 'Ce code ne correspond à aucune demande enregistrée.' };
+if (v.status === 'refused') return { level: 'red', title: 'Visite refusée', reason: 'Le service visité a refusé cette demande.' };
+if (v.status === 'pending') return { level: 'red', title: 'Visite non validée', reason: 'La demande attend encore la validation du service visité.' };
+if (v.status === 'entered') return { level: 'orange', title: 'Déjà entré', reason: `Entrée déjà enregistrée à ${hm(new Date(v.enteredAt))}.` };
+const n = now(), { start, end } = bounds(v);
+const open = new Date(start - 15 * MIN), close = new Date(+end + 30 * MIN);
+if (n > close) return v.date === today()
+? { level: 'orange', title: 'Hors créneau', reason: `Créneau prévu ${slotTxt(v.slot)} : le visiteur arrive en retard.` }
+: { level: 'red', title: 'QR expiré', reason: `Ce QR code était valable le ${dateTxt(v.date)}.` };
+if (n < open) return v.date === today()
+? { level: 'orange', title: 'Hors créneau', reason: `Créneau prévu ${slotTxt(v.slot)} : le visiteur est en avance.` }
+: { level: 'orange', title: 'Pas la bonne date', reason: `Visite prévue le ${dateTxt(v.date)}, ${slotTxt(v.slot)}.` };
+return { level: 'green', title: 'Accès conforme', reason: 'QR valide, bonne date, bon créneau.' };
+}
+function purge() {
+const lim = now().getTime() - 24 * 60 * MIN, before = S.visits.length + S.log.length;
+S.visits = S.visits.filter(v => bounds(v).end.getTime() > lim);
+S.log = S.log.filter(l => new Date(l.t).getTime() > lim);
+if (S.visits.length + S.log.length !== before) save();
+}
+const VIEWS = ['accueil', 'suivi', 'hote', 'agent', 'tableau'];
+const STAFF = ['hote', 'agent', 'tableau'];
+function go(view, anchor) {
+if (!VIEWS.includes(view)) view = 'accueil';
+$$('.view').forEach(v => v.hidden = v.id !== 'v-' + view);
+$$('nav.main a').forEach(a => a.removeAttribute('aria-current'));
+const cur = $$('nav.main a').find(a => a.dataset.go === view && (anchor ? a.dataset.anchor === anchor : !a.dataset.anchor));
+if (cur) cur.setAttribute('aria-current', 'page');
+$('#staff').classList.toggle('on', STAFF.includes(view));
+closeMenu();
+if (view !== 'agent' && scanner) toggleCam();
+try { history.replaceState(null, '', '#' + (anchor || view)) } catch (e) {}
+if (anchor) setTimeout(() => document.getElementById(anchor)?.scrollIntoView({ block: 'start' }), 0);
+else window.scrollTo(0, 0);
+if (view === 'agent') setTimeout(() => $('#codeInput').focus({ preventScroll: true }), 50);
+}
+document.addEventListener('click', e => {
+const a = e.target.closest('[data-go]'); if (!a) return;
+e.preventDefault(); go(a.dataset.go, a.dataset.anchor);
+});
+function closeMenu() { $('#staffMenu').hidden = true; $('#staffBtn').setAttribute('aria-expanded', 'false') }
+$('#staffBtn').onclick = e => { e.stopPropagation(); const open = $('#staffMenu').hidden; $('#staffMenu').hidden = !open; $('#staffBtn').setAttribute('aria-expanded', String(open)) };
+document.addEventListener('click', e => { if (!e.target.closest('#staff')) closeMenu(); if (!e.target.closest('.demo-fab')) { $('#demoPanel').hidden = true; $('#demoToggle').setAttribute('aria-expanded', 'false') } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMenu(); $('#demoPanel').hidden = true } });
+const W = { step: 1, service: '', motif: '', slot: '' };
+function renderPickers() {
+$('#w_service').innerHTML = SERVICES.map(s => `<button type="button" class="pick" data-svc="${s[0]}" aria-pressed="${W.service === s[0]}"><span class="i">${s[3]}</span>${esc(s[1])}<small>${esc(s[2])}</small></button>`).join('');
+$('#w_motif').innerHTML = MOTIFS.map(m => `<button type="button" class="chip-btn" data-motif="${m[0]}" aria-pressed="${W.motif === m[0]}">${esc(m[1])}</button>`).join('');
+$('#w_autreWrap').hidden = W.motif !== 'autre';
+const d = $('#w_date').value, n = now();
+$('#w_slot').innerHTML = SLOTS.map(s => {
+const past = d === today() && bounds({ date: d, slot: s }).end <= n;
+if (past && W.slot === s) W.slot = '';
+return `<button type="button" class="chip-btn" data-slot="${s}" aria-pressed="${W.slot === s}" ${past ? 'disabled title="Créneau passé"' : ''}>${slotTxt(s)}</button>`;
+}).join('');
+}
+$('#w_service').addEventListener('click', e => { const b = e.target.closest('[data-svc]'); if (b) { W.service = b.dataset.svc; renderPickers() } });
+$('#w_motif').addEventListener('click', e => { const b = e.target.closest('[data-motif]'); if (b) { W.motif = b.dataset.motif; renderPickers(); if (W.motif === 'autre') $('#w_autre').focus() } });
+$('#w_slot').addEventListener('click', e => { const b = e.target.closest('[data-slot]'); if (b && !b.disabled) { W.slot = b.dataset.slot; renderPickers() } });
+$('#w_date').addEventListener('change', renderPickers);
+function showStep(s) {
+W.step = s;
+$$('#wizCard [data-step]').forEach(el => el.hidden = el.dataset.step !== String(s));
+$$('#progress li').forEach((li, i) => { li.className = s === 'done' || i + 1 < s ? 'done' : i + 1 === s ? 'cur' : '' });
+$('#progress').hidden = s === 'done';
+$('#wnav').hidden = s === 'done';
+$('#wBack').style.visibility = s === 1 ? 'hidden' : 'visible';
+$('#wNext').textContent = s === 3 ? 'Envoyer ma demande' : 'Continuer →';
+$('#wNext').className = s === 3 ? 'btn accent' : 'btn primary';
+$('#w_err').hidden = true;
+if (s === 3) {
+$('#w_recap').innerHTML = `<dt>Visiteur</dt><dd>${esc($('#w_prenom').value.trim())} ${esc($('#w_nom').value.trim())}</dd>
+<dt>E-mail</dt><dd>${esc($('#w_email').value.trim())}</dd>
+<dt>Service</dt><dd>${esc(lbl(SERVICES, W.service))}</dd>
+<dt>Motif</dt><dd>${esc(W.motif === 'autre' && $('#w_autre').value.trim() ? $('#w_autre').value.trim() : lbl(MOTIFS, W.motif))}</dd>
+<dt>Quand</dt><dd>${esc(dateTxt($('#w_date').value))}, ${slotTxt(W.slot)}</dd>`;
+}
+}
+const werr = m => { $('#w_err').textContent = m; $('#w_err').hidden = false };
+$('#wBack').onclick = () => showStep(W.step - 1);
+$('#wNext').onclick = () => {
+if (W.step === 1) {
+if (!$('#w_prenom').value.trim() || !$('#w_nom').value.trim()) return werr('Indiquez votre prénom et votre nom.');
+if (!isEmail($('#w_email').value.trim())) return werr('Indiquez une adresse e-mail valide, par exemple prenom.nom@exemple.fr.');
+return showStep(2);
+}
+if (W.step === 2) {
+if (!W.service) return werr('Choisissez le service que vous venez voir.');
+if (!W.motif) return werr('Choisissez le motif de votre visite.');
+if (!$('#w_date').value || $('#w_date').value < today()) return werr('Choisissez une date à partir d\'aujourd\'hui.');
+if (!W.slot) return werr('Choisissez un créneau d\'arrivée.');
+return showStep(3);
+}
+if (W.step === 3) {
+if (!$('#w_consent').checked) return werr('Cochez la case pour accepter l\'utilisation de vos données.');
+const v = { prenom: $('#w_prenom').value.trim(), nom: $('#w_nom').value.trim(), email: $('#w_email').value.trim(), service: W.service, motif: W.motif, autre: W.motif === 'autre' ? $('#w_autre').value.trim() : '', date: $('#w_date').value, slot: W.slot,
+id: newId(), token: newToken(), status: 'pending', by: 'visitor', createdAt: now().toISOString() };
+S.visits.push(v); save(); renderAll();
+$('#doneId').textContent = v.id;
+$('#doneTrack').onclick = () => { go('suivi'); $('#lk_q').value = v.id; lookup(v.id) };
+showStep('done');
+$('#visite').scrollIntoView({ block: 'start' });
+}
+};
+$('#doneNew').onclick = () => {
+['#w_prenom', '#w_nom', '#w_email', '#w_autre'].forEach(s => $(s).value = '');
+$('#w_consent').checked = false; Object.assign(W, { service: '', motif: '', slot: '' });
+setDates(); renderPickers(); showStep(1);
+};
+const CHECK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>';
+const CROSS = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+function lookup(q) {
+const box = $('#lkRes'), v = findVisit(q);
+if (!String(q || '').trim()) { box.innerHTML = '<div class="empty">Votre demande s\'affichera ici.</div>'; return }
+if (!v) { box.innerHTML = `<div class="card"><h3 style="margin-bottom:6px">Demande introuvable</h3><p class="muted">Aucune demande ne correspond à « ${esc(q)} ». Vérifiez le numéro ou présentez-vous à l'accueil.</p></div>`; return }
+const st = v.status;
+const s2 = st === 'pending' ? ['now', '…', 'En attente de validation', 'Le service visité n\'a pas encore répondu.']
+: st === 'refused' ? ['fail', CROSS, 'Demande refusée', v.refuseReason ? `Motif : ${v.refuseReason}` : 'Contactez le service que vous souhaitiez voir.']
+: ['done', CHECK, 'Visite validée', 'Votre QR code est prêt.'];
+const s3 = st === 'entered' ? ['done', CHECK, 'Visite effectuée', `Entrée à ${hm(new Date(v.enteredAt))}.`] : ['', '3', 'Le jour J', `${dateTxt(v.date)}, ${slotTxt(v.slot)}`];
+const li = ([c, i, t, d]) => `<li class="${c}"><span class="dot">${i}</span><div><b>${esc(t)}</b><span>${esc(d)}</span></div></li>`;
+const qr = (st === 'validated' || st === 'entered') ? `
+<div style="display:grid;justify-items:center;gap:8px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)">
+<p style="font-weight:600">Présentez ce QR code à l'entrée avec votre pièce d'identité.</p>
+<div data-qr="${esc(v.token)}"></div><div class="mono" style="font-weight:700;font-size:18px">${esc(v.token)}</div>
+<button class="btn" type="button" id="lkBadge">Afficher mon badge</button>
+</div>` : '';
+box.innerHTML = `<div class="card">
+<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:18px"><div><div class="who">${esc(fullName(v))}</div><div class="muted">${esc(lbl(SERVICES, v.service))} · ${esc(motifTxt(v))}</div></div><span class="mono muted">${v.id}</span></div>
+<ol class="timeline">${li(['done', CHECK, 'Demande envoyée', 'Nous avons bien reçu votre demande.'])}${li(s2)}${st !== 'refused' ? li(s3) : ''}</ol>${qr}</div>`;
+hydrateQR(box);
+const b = $('#lkBadge'); if (b) b.onclick = () => openBadge(v);
+}
+$('#lkForm').addEventListener('submit', e => { e.preventDefault(); lookup($('#lk_q').value) });
+let refusing = null;
+function renderHost() {
+const pend = S.visits.filter(v => v.status === 'pending').sort((a, b) => bounds(a).start - bounds(b).start);
+const c = $('#cntPending2'); c.textContent = pend.length; c.hidden = !pend.length;
+$('#pendingList').innerHTML = pend.length ? pend.map(v => `
+<div class="item" data-id="${v.id}">
+<div class="top"><div><div class="who">${esc(fullName(v))}</div><div class="muted" style="font-size:15px">${esc(v.email)}</div></div><span class="mono muted" style="font-size:14px">${v.id}</span></div>
+<div class="meta"><span class="tag">${esc(lbl(SERVICES, v.service))}</span><span class="tag">${esc(motifTxt(v))}</span><span>${esc(dateTxt(v.date))} · ${slotTxt(v.slot)}</span></div>
+${refusing === v.id ? `
+<label class="f" style="font-weight:600">Motif du refus <span class="opt">(facultatif, visible par le visiteur)</span><input type="text" id="refReason" placeholder="ex. rendez-vous déplacé"></label>
+<div class="actions"><button class="btn bad sm" data-act="refuse-ok">Confirmer le refus</button><button class="btn sm" data-act="refuse-cancel">Annuler</button></div>` : `
+<div class="actions"><button class="btn ok sm" data-act="validate">✓ Valider</button><button class="btn link-bad sm" data-act="refuse">Refuser</button></div>`}
+</div>`).join('') : '<div class="empty">Aucune demande en attente. Tout est à jour.</div>';
+if (refusing) $('#refReason')?.focus();
+const up = S.visits.filter(v => (v.status === 'validated' || v.status === 'entered') && v.date >= today()).sort((a, b) => bounds(a).start - bounds(b).start);
+$('#upcomingList').innerHTML = up.length ? up.map(v => `
+<div class="item" data-id="${v.id}">
+<div class="top"><span class="who">${esc(fullName(v))}</span>${v.status === 'entered' ? '<span class="pill p-info">Arrivé</span>' : '<span class="pill p-ok">QR envoyé</span>'}</div>
+<div class="meta"><span>${esc(dateTxt(v.date))} · ${slotTxt(v.slot)}</span>${v.by === 'host' ? '<span class="tag">Invitation</span>' : ''}</div>
+<div><button class="btn sm" data-act="qr">Voir le QR code</button></div>
+</div>`).join('') : '<div class="empty">Aucune visite validée à venir.</div>';
+}
+document.addEventListener('click', e => {
+const b = e.target.closest('[data-act]'); if (!b) return;
+const act = b.dataset.act;
+if (act === 'scan') { $('#codeInput').value = b.dataset.code; check(b.dataset.code); $('#result').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); return }
+const v = S.visits.find(x => x.id === b.closest('[data-id]')?.dataset.id); if (!v) return;
+if (act === 'validate') { v.status = 'validated'; v.validatedAt = now().toISOString(); save(); renderAll(); toast(`QR code créé pour ${fullName(v)}`, { label: 'Voir', fn: () => openBadge(v) }) }
+else if (act === 'refuse') { refusing = v.id; renderHost() }
+else if (act === 'refuse-cancel') { refusing = null; renderHost() }
+else if (act === 'refuse-ok') { v.status = 'refused'; v.refuseReason = ($('#refReason')?.value || '').trim(); refusing = null; save(); renderAll(); toast(`Demande de ${fullName(v)} refusée`, null, 'warn') }
+else if (act === 'qr') openBadge(v);
+});
+$('#invForm').addEventListener('submit', e => {
+e.preventDefault();
+if (!e.target.reportValidity()) return;
+if ($('#i_date').value < today()) { toast('La date ne peut pas être dans le passé.', null, 'warn'); return }
+const v = { prenom: $('#i_prenom').value.trim(), nom: $('#i_nom').value.trim(), email: $('#i_email').value.trim(), service: $('#i_service').value, motif: $('#i_motif').value, autre: '', date: $('#i_date').value, slot: $('#i_slot').value,
+id: newId(), token: newToken(), status: 'validated', by: 'host', createdAt: now().toISOString(), validatedAt: now().toISOString() };
+S.visits.push(v); save(); e.target.reset(); setDates(); renderAll();
+openBadge(v, `Invitation créée. Transmettez au visiteur son numéro <b class="mono">${v.id}</b> : il retrouvera ce QR code dans « Suivre ma demande ».`);
+});
+let current = null;
+const ICON = {
+green: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>',
+orange: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M12 7v6M12 17h.01"/></svg>',
+red: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+function check(raw) {
+const q = String(raw || '').trim();
+if (!q) { toast('Saisissez ou scannez un code.', null, 'warn'); return }
+const v = findVisit(q);
+current = { v, ev: evaluate(v), code: q.toUpperCase(), decided: null };
+renderResult();
+}
+function renderResult() {
+const box = $('#result');
+if (!current) {
+box.innerHTML = `<div class="result idle"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></svg><div><b style="color:var(--fg)">En attente d'un visiteur</b><br>Scannez son QR code ou utilisez « Simuler le scan » dans la liste.</div></div>`;
+return;
+}
+const { v, ev, decided } = current;
+const facts = v ? `<dl class="facts"><dt>Visiteur</dt><dd>${esc(fullName(v))}</dd><dt>Visite</dt><dd>${esc(lbl(SERVICES, v.service))} · ${esc(motifTxt(v))}</dd><dt>Prévu</dt><dd>${esc(dateTxt(v.date))}, ${slotTxt(v.slot)}</dd><dt>Demande</dt><dd class="mono">${v.id} · ${v.by === 'host' ? 'invitation' : 'demande du visiteur'}</dd></dl>`
+: `<dl class="facts"><dt>Code lu</dt><dd class="mono">${esc(current.code)}</dd></dl>`;
+const ui = decided
+? `<div class="decided">${decided.d === 'in' ? '✓ Entrée autorisée' : '✕ Entrée refusée'} par l'agent à ${hm(new Date(decided.t))}${decided.override ? '<span class="override">Décision différente de la proposition</span>' : ''}</div>
+<div><button class="btn primary" type="button" id="nextBtn">Visiteur suivant</button></div>`
+: `<label class="f" style="font-weight:600">Commentaire <span class="opt">(facultatif)</span><textarea id="cmt" placeholder="ex. pièce d'identité vérifiée, visiteur accompagné"></textarea></label>
+<div class="actions"><button class="btn ok xl" type="button" id="inBtn">Laisser entrer</button><button class="btn bad xl" type="button" id="outBtn">Refuser l'entrée</button></div>`;
+box.innerHTML = `<div class="result ${ev.level}" role="status">
+<div class="verdict"><div class="vicon">${ICON[ev.level]}</div><div><small>Proposition du système</small><h3>${esc(ev.title)}</h3><p>${esc(ev.reason)}</p></div></div>
+${facts}${ui}
+<div class="motto"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Le système propose, l'agent décide.</div>
+</div>`;
+if (decided) $('#nextBtn').onclick = () => { current = null; renderResult(); $('#codeInput').value = ''; $('#codeInput').focus() };
+else { $('#inBtn').onclick = () => decide('in'); $('#outBtn').onclick = () => decide('out') }
+}
+function decide(d) {
+const { v, ev } = current, t = now();
+const override = (ev.level === 'green' && d === 'out') || (ev.level === 'red' && d === 'in');
+S.log.push({ t: t.toISOString(), vid: v ? v.id : null, name: v ? fullName(v) : `Code inconnu (${current.code})`, level: ev.level, title: ev.title, d, cmt: ($('#cmt')?.value || '').trim(), override });
+if (v) { if (d === 'in') { v.status = 'entered'; v.enteredAt = t.toISOString() } else v.lastOut = t.toISOString() }
+current.decided = { d, t: t.toISOString(), override };
+save(); renderAll(); renderResult();
+}
+$('#scanForm').addEventListener('submit', e => { e.preventDefault(); check($('#codeInput').value) });
+function statusPill(v) {
+if (v.status === 'entered') return `<span class="pill p-ok">Entré ${hm(new Date(v.enteredAt))}</span>`;
+if (v.status === 'refused') return '<span class="pill p-bad">Refusé</span>';
+if (v.status === 'pending') return '<span class="pill p-wait">Non validé</span>';
+if (v.lastOut) return '<span class="pill p-warn">Refusé à l\'entrée</span>';
+return '<span class="pill p-info">Attendu</span>';
+}
+const todays = () => S.visits.filter(v => v.date === today()).sort((a, b) => bounds(a).start - bounds(b).start || a.nom.localeCompare(b.nom));
+function renderAgent() {
+const list = todays();
+$('#todayList').innerHTML = list.length ? `<table><thead><tr><th>Créneau</th><th>Visiteur</th><th>Statut</th><th></th></tr></thead><tbody>${list.map(v => `
+<tr><td class="num">${slotTxt(v.slot)}</td><td><b>${esc(fullName(v))}</b><div class="muted" style="font-size:14px">${esc(lbl(SERVICES, v.service))}</div></td><td>${statusPill(v)}</td>
+<td style="text-align:right"><button class="btn sm" data-act="scan" data-code="${esc(v.token)}">Simuler le scan</button></td></tr>`).join('')}</tbody></table>`
+: '<div class="empty">Aucun visiteur prévu aujourd\'hui.<br>Ouvrez le bouton « Démo » en bas à gauche pour charger des exemples.</div>';
+const logs = S.log.filter(l => ymd(new Date(l.t)) === today()).sort((a, b) => b.t.localeCompare(a.t));
+const lv = { green: 'p-ok', orange: 'p-warn', red: 'p-bad' };
+$('#history').innerHTML = logs.length ? `<table><thead><tr><th>Heure</th><th>Visiteur</th><th>Proposition</th><th>Décision de l'agent</th><th>Commentaire</th></tr></thead><tbody>${logs.map(l => `
+<tr><td class="num">${hm(new Date(l.t))}</td><td>${esc(l.name)}</td><td><span class="pill ${lv[l.level]}">${esc(l.title)}</span></td>
+<td><b>${l.d === 'in' ? 'Entrée autorisée' : 'Entrée refusée'}</b>${l.override ? '<span class="override">≠ proposition</span>' : ''}</td><td class="muted">${esc(l.cmt) || '—'}</td></tr>`).join('')}</tbody></table>`
+: '<div class="empty">Aucune entrée enregistrée aujourd\'hui.</div>';
+if (!$('#panneView').hidden) $('#panneSheet').innerHTML = panneHTML();
+}
+function panneHTML() {
+const list = todays().filter(v => v.status === 'validated' || v.status === 'entered');
+return `<h3 style="margin-bottom:4px;color:#2b0d17">Contrôle manuel des visiteurs — ${esc(dateTxt(today()))}</h3>
+<p style="font-size:14px;color:#555;margin-bottom:12px">Liste éditée à ${hm(now())} · ${list.length} visiteur(s) autorisé(s) · Vérifier la pièce d'identité · Prototype non officiel</p>
+<table><thead><tr><th>Créneau</th><th>Nom</th><th>Service visité</th><th>N° demande</th><th>Entré</th><th>Heure</th><th>Visa agent</th></tr></thead><tbody>
+${list.map(v => `<tr><td class="num">${slotTxt(v.slot)}</td><td><b>${esc(v.nom.toUpperCase())}</b> ${esc(v.prenom)}</td><td>${esc(lbl(SERVICES, v.service))}</td><td class="num">${v.id}</td><td>${v.status === 'entered' ? '✔' : '<span class="box"></span>'}</td><td class="num">${v.status === 'entered' ? hm(new Date(v.enteredAt)) : '____'}</td><td></td></tr>`).join('') || '<tr><td colspan="7">Aucun visiteur autorisé aujourd\'hui.</td></tr>'}
+</tbody></table>`;
+}
+$('#panneBtn').onclick = () => { $('#panneSheet').innerHTML = panneHTML(); $('#panneView').hidden = false; $('#panneView').scrollIntoView({ behavior: 'smooth', block: 'start' }) };
+$('#panneClose').onclick = () => { $('#panneView').hidden = true };
+if (EMBED) $('#pannePrint').hidden = true;
+$('#pannePrint').onclick = () => printHTML(`<div style="font-family:'Source Sans 3',Arial,sans-serif;padding:10px">${panneHTML()}</div>`);
+let scanner = null;
+const camLabel = t => { $('#camBtn span').textContent = t };
+async function toggleCam() {
+if (scanner) { const s = scanner; scanner = null; try { await s.stop(); s.clear() } catch (e) {} $('#reader').hidden = true; camLabel('Scanner avec la caméra'); return }
+if (typeof Html5Qrcode === 'undefined') { toast('Lecteur caméra indisponible : saisissez le code à la main.', null, 'warn'); return }
+$('#reader').hidden = false;
+scanner = new Html5Qrcode('reader');
+try {
+await scanner.start({ facingMode: 'environment' }, { fps: 10, qrbox: 220 }, txt => { $('#codeInput').value = txt; toggleCam(); check(txt) });
+camLabel('Arrêter la caméra');
+} catch (e) { scanner = null; $('#reader').hidden = true; toast('Impossible d\'accéder à la caméra : saisissez le code à la main.', null, 'warn') }
+}
+if (EMBED) $('#camBtn').hidden = true;
+$('#camBtn').onclick = toggleCam;
+function renderStats() {
+const logs = S.log.filter(l => ymd(new Date(l.t)) === today());
+const expected = S.visits.filter(v => v.date === today() && (v.status === 'validated' || v.status === 'entered')).length;
+const entered = logs.filter(l => l.d === 'in').length;
+const g = logs.filter(l => l.level === 'green').length, o = logs.filter(l => l.level === 'orange').length, r = logs.filter(l => l.level === 'red').length;
+const kpi = (k, v, s) => `<div class="kpi"><span class="k">${k}</span><span class="v">${v}</span><span class="s">${s}</span></div>`;
+$('#kpis').innerHTML =
+kpi('Visiteurs attendus', expected, 'validés pour aujourd\'hui') +
+kpi('Entrées', entered, `sur ${logs.length} contrôle(s)`) +
+kpi('Contrôles conformes', logs.length ? Math.round(g / logs.length * 100) + ' %' : '—', 'feu vert du premier coup') +
+kpi('Corrections de l\'agent', logs.filter(l => l.override).length, 'décision différente de la proposition') +
+kpi('Temps gagné', '≈ ' + Math.round(logs.length * 105 / 60) + ' min', 'par rapport au contrôle manuel') +
+kpi('Demandes en attente', S.visits.filter(v => v.status === 'pending').length, 'à valider par les services');
+const w = n => logs.length ? n / logs.length * 100 + '%' : '0';
+$('#dist').innerHTML = logs.length ? `<div class="bar" role="img" aria-label="${g} conformes, ${o} à vérifier, ${r} non conformes"><span style="width:${w(g)};background:var(--ok)"></span><span style="width:${w(o)};background:var(--warn)"></span><span style="width:${w(r)};background:var(--bad)"></span></div>
+<div class="legend"><span><i style="background:var(--ok)"></i>Conforme : ${g}</span><span><i style="background:var(--warn)"></i>À vérifier : ${o}</span><span><i style="background:var(--bad)"></i>Non conforme : ${r}</span></div>
+<p class="muted" style="margin-top:14px;font-size:15.5px">Les cas orange et rouge sont ceux où l'agent apporte le plus : il écoute, vérifie et décide.</p>`
+: '<div class="empty">Aucun contrôle aujourd\'hui.</div>';
+}
+$('#demoToggle').onclick = () => { const open = $('#demoPanel').hidden; $('#demoPanel').hidden = !open; $('#demoToggle').setAttribute('aria-expanded', String(open)); if (open) syncSimInput() };
+function syncSimInput() { const n = now(); $('#simInput').value = `${ymd(n)}T${hm(n)}` }
+function renderClock() { $('#clockTxt').textContent = now().toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' }) + ' · ' + hm(now()); $('#clockSim').hidden = Math.abs(S.offset || 0) < 60e3 }
+$('#simApply').onclick = () => { const v = $('#simInput').value; if (!v) return; S.offset = new Date(v).getTime() - Date.now(); save(); purge(); setDates(); renderAll(); toast('Heure simulée : ' + hm(now())) };
+$('#simReal').onclick = () => { S.offset = 0; save(); syncSimInput(); purge(); setDates(); renderAll(); toast('Retour à l\'heure réelle') };
+$('#demoBtn').onclick = () => {
+const base = new Date(); base.setHours(10, 15, 0, 0);
+S.offset = base.getTime() - Date.now();
+const d0 = ymd(base), y = new Date(base); y.setDate(y.getDate() - 1); const d1 = ymd(y);
+const at = (d, t) => new Date(`${d}T${t}:00`).toISOString();
+const mk = o => ({ autre: '', by: 'visitor', createdAt: at(d1, '09:00'), ...o });
+S.visits = [
+mk({ id: 'V-2041', token: '7KQP-M4XA', prenom: 'Camille', nom: 'Martin', email: 'camille.martin@exemple.fr', service: 'scolarite', motif: 'rdv', date: d0, slot: '10:00-11:00', status: 'validated' }),
+mk({ id: 'V-2042', token: 'H2TR-9WDE', prenom: 'Lucas', nom: 'Bernard', email: 'l.bernard@exemple.fr', service: 'bibliotheque', motif: 'reunion', date: d0, slot: '14:00-15:00', status: 'validated', by: 'host' }),
+mk({ id: 'V-2043', token: 'N8FB-3ZLC', prenom: 'Inès', nom: 'Dubois', email: 'ines.dubois@exemple.fr', service: 'rh', motif: 'rdv', date: d0, slot: '11:00-12:00', status: 'pending' }),
+mk({ id: 'V-2044', token: 'P5VJ-6GYH', prenom: 'Thomas', nom: 'Petit', email: 't.petit@exemple.fr', service: 'autre', motif: 'livraison', date: d0, slot: '10:00-11:00', status: 'refused', refuseReason: 'Livraison reportée' }),
+mk({ id: 'V-2045', token: 'R3MD-8KNU', prenom: 'Sarah', nom: 'Leroy', email: 'sarah.leroy@exemple.fr', service: 'enseignant', motif: 'examen', date: d0, slot: '09:00-10:00', status: 'entered', enteredAt: at(d0, '09:05') }),
+mk({ id: 'V-2046', token: 'W9XS-2CFT', prenom: 'Hugo', nom: 'Moreau', email: 'hugo.moreau@exemple.fr', service: 'scolarite', motif: 'rdv', date: d1, slot: '15:00-16:00', status: 'validated' })
+];
+S.log = [
+{ t: at(d0, '09:05'), vid: 'V-2045', name: 'Sarah Leroy', level: 'green', title: 'Accès conforme', d: 'in', cmt: 'Surveillante d\'examen, salle B204', override: false },
+{ t: at(d0, '09:40'), vid: null, name: 'Code inconnu (QX7T-0000)', level: 'red', title: 'QR inconnu', d: 'out', cmt: 'Capture d\'écran d\'un autre QR, personne orientée vers l\'accueil', override: false }
+];
+current = null; refusing = null;
+save(); syncSimInput(); setDates(); renderAll(); renderResult();
+$('#demoPanel').hidden = true;
+toast('Données de démo chargées. Il est 10 h 15.');
+};
+let wipeArmed = null;
+$('#wipeBtn').onclick = () => {
+if (!wipeArmed) { $('#wipeBtn').textContent = 'Cliquez encore pour confirmer'; wipeArmed = setTimeout(() => { wipeArmed = null; $('#wipeBtn').textContent = 'Tout effacer' }, 4000); return }
+clearTimeout(wipeArmed); wipeArmed = null; $('#wipeBtn').textContent = 'Tout effacer';
+S = blank(); current = null; save(); syncSimInput(); setDates(); renderAll(); renderResult(); lookup('');
+toast('Toutes les données ont été effacées.');
+};
+function setDates() {
+['#w_date', '#i_date'].forEach(s => { const el = $(s); el.min = today(); if (!el.value || el.value < today()) el.value = today() });
+renderPickers();
+}
+function renderAll() { renderClock(); renderHost(); renderAgent(); renderStats() }
+fillSelect($('#i_service'), SERVICES); fillSelect($('#i_motif'), MOTIFS); fillSelect($('#i_slot'), SLOTS);
+purge(); setDates(); syncSimInput(); renderAll(); renderResult(); showStep(1);
+const h = (location.hash || '').slice(1);
+if (h === 'visite') go('accueil', 'visite'); else go(h);
+setInterval(renderClock, 1000);
+setInterval(() => { renderAgent(); renderStats() }, 30000);
+})();
+</script>
+</body>
+</html>
